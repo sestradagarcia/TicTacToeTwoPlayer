@@ -75,7 +75,7 @@ export default function Game() {
             }
         }
     }
-    
+
     const handleEnter = () => {
         if (end()) {
             if (gameOutcome() === 'Win') {
@@ -105,14 +105,12 @@ export default function Game() {
                 place(AIPosition, 'o')
             }
         }, ~~(Math.random() * 1200) + 200)
-
-        //winner()
     }
 
     const getNotification = () => {
         if (end()) {
             if (gameOutcome() === 'Tie') {
-                return 'Tie :( (press enter to try again)'
+                return 'Tie (press enter to try again)'
             } else if (gameOutcome() === 'Win') {
                 if (Utils.getWinner(tiles()) === 'x') {
                     return 'Player wins (press enter to continue)'
@@ -125,40 +123,45 @@ export default function Game() {
     }
 
     createEffect(() => {
-        playerPosition.x = (index() % 3) * 300 + 425
-        playerPosition.y = ~~(index() / 3) * 300 + 125
-        playerPosition.alpha = playerTurn() && !end() ? 1 : 0 || end() && 0
+        playerPosition.x = (index() % 3) * 300 + 435
+        playerPosition.y = ~~(index() / 3) * 300 + 145
+        playerPosition.alpha = playerTurn() && !end() ? 0.1 : 0 || end() && 0
     });
-
-
-
 
     return (
         <View autofocus onEnter={handleEnter} onUp={handleUp} onDown={handleDown} onRight={handleRight} onLeft={handleLeft}>
             <Column>
-                <Text style={{ fontSize: 29 }}>Player {playerScore}</Text>
-                <Text style={{ y: 50, fontSize: 29 }}>Computer {computerScore}</Text>
+                <Text style={{ fontSize: 40 }}>Player {playerScore}</Text>
+                <Text style={{ y: 50, fontSize: 40 }}>Computer {computerScore}</Text>
             </Column>
             <View ref={playerPosition} style={{
                 width: 250,
                 height: 250,
                 color: 0x40ffffff,
                 x: 575,
-                y: 125,
+                y: 145,
                 zIndex: 1000,
+                transition: { 
+                    y: { duration: 800, easing: 'ease-in-out' }, 
+                    x: { duration: 800, easing: 'ease-in-out' }, 
+                  },
             }} />
-            <Grid x={700} y={100} color={0x40ffffff}/>
-            <For each={tiles()}>
-                {(tile, idx) => (
-                    <Text style={{ x: (idx() % 3) * 300 + 525, y: ~~(idx() / 3) * 300 + 200, color: 0x40ffffff, zIndex: 1000, }}>
-                        {tile === 'e' ? '' : tile} {/*{tile} */}
-                    </Text>
-                )}
-            </For>
+                <Grid x={700} y={120} color={0x40ffffff}/>
+                <For each={tiles()}>
+                    {(tile, idx) => (
+                        <Text style={{ x: (idx() % 3) * 300 + 525, y: ~~(idx() / 3) * 300 + 210, color: 0x40ffffff, zIndex: 1000, }}>
+                            {tile === 'e' ? '' : tile} {/*{tile} */}
+                        </Text>
+                    )}
+                </For>
             <Show when={gameOutcome() === 'Win' || gameOutcome() === 'Tie'}>
-                <Text style={{
-                    color: 0x40ffffff, x: 700,
-                    y: 100, zIndex: 2000,
+                <Text style={{ fontSize: 60, width: 1500, contain: 'width', textAlign: 'centre',
+                    color: 0x40ffffff, x: 300,
+                    y: 0, zIndex: 1000,
+                    alpha: 1,
+                    transition: {
+                        alpha: { duration: 300, easing: "ease-in" },
+                    }
                 }}>
                     {getNotification()}
                 </Text>

@@ -10,6 +10,7 @@ import Splash from './pages/Splash';
 import MainMenu from './pages/MainMenu';
 import Game from './pages/Game';
 import About from './pages/About';
+import ExitMenu from './pages/ExitMenu';
 
 Config.debug = true;
 Config.fontSettings.fontFamily = 'pixel';
@@ -28,10 +29,13 @@ const splashText = "LOADING...";
 render(() =>  (
   <Canvas options={RenderOptions}>
     <HashRouter root={App}>
-      <Route path="/" component={() => <Splash text={splashText} />} />
+      <Route path="/" component={() => <Splash text={splashText} path='/menu'/>} />
       <Route path="/menu" component={MainMenu} />
       <Route path="/game" component={Game} />
       <Route path="/about" component={About} />
+      <Route path="/exitmenu" component={ExitMenu} />
+      <Route path="/save" component={() => <Splash text={"SAVING..."} />} />
+      <Route path="/quit" component={() => <Splash text={"QUITING..."} />} />
       <Route path="/*all" component={NotFound} />
     </HashRouter>
   </Canvas>
